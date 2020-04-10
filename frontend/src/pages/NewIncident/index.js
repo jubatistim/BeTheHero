@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi'
 
 import api from '../../services/api';
@@ -16,6 +16,8 @@ export default function NewIncident() {
 
     const ongId = localStorage.getItem('ongId');
 
+    const history = useHistory();
+
     async function handleNewIncident(e) {
         e.preventDefault();
 
@@ -28,9 +30,11 @@ export default function NewIncident() {
         try {
             await api.post('incidents', data, {
                 headers: {
-                    Authorization: ongId,
+                    Authorization: ongId,                    
                 }
             })
+
+            history.push('/profile');
         } catch (err) {
             alert('Erro ao cadastrar caso, tente novamente.');
         }
@@ -54,17 +58,17 @@ export default function NewIncident() {
                     <input 
                             placeholder="Título do caso"
                             value={title}
-                            onChange={e => setTitle(e.title.value)}
+                            onChange={e => setTitle(e.target.value)}
                         />
                     <textarea 
                             placeholder="Descrição"
                             value={description}
-                            onChange={e => setDescription(e.title.value)}
+                            onChange={e => setDescription(e.target.value)}
                         />
                     <input 
                             placeholder="Valor em reais"
                             value={value}
-                            onChange={e => setValue(e.title.value)}
+                            onChange={e => setValue(e.target.value)}
                         />
 
                     <button className="button" type="submit">Cadastrar</button>

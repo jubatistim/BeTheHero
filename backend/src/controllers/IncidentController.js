@@ -2,15 +2,18 @@ const connection = require('../database/connection');
 
 module.exports = {
     async index (request, response){
-        const { page = 1 } = request.query;
+        const { page = 1, limit = 5 } = request.query;
         
+        const ong_id = request.headers.authorization;
+
         const [count] = await connection('incidents')
             .count();
 
         const incidents = await connection('incidents')
             .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
-            .limit(5)
+            .limit(limit)
             .offset((page-1)*5)
+            .where('ong_id', '=', ong_id)
             .select(
                 [
                     'incidents.*',

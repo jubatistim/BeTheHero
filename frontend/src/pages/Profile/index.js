@@ -20,6 +20,8 @@ export default function Profile() {
         api.get('incidents', {
             headers: {
                 Authorization: ongId,
+            }, params: {
+                limit: 1000
             }
         }).then(response => {
             setIncidents(response.data);
